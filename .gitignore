@@ -65,3 +65,4 @@ tmp
 # IDEs & Editors
 .idea
 *~
+/temp/

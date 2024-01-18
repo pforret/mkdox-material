@@ -57,12 +57,15 @@ RUN \
 && \
   pip install --no-cache-dir --upgrade pip \
 && \
-  pip install --no-cache-dir . \
-&& \
+  pip install --no-cache-dir .
+
+## install plugins
+RUN \
   if [ "${WITH_PLUGINS}" = "true" ]; then \
     pip install --no-cache-dir \
       mkdocs-material[recommended] \
-      mkdocs-material[imaging]; \
+      mkdocs-material[imaging] \
+      mkdocs-awesome-pages-plugin; \
   fi \
 && \
   if [ -e user-requirements.txt ]; then \
