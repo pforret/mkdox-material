@@ -36,6 +36,7 @@ COPY package.json package.json
 COPY README.md README.md
 COPY *requirements.txt ./
 COPY pyproject.toml pyproject.toml
+COPY fonts /usr/share/fonts/Additional
 
 # Perform build and cleanup artifacts and caches
 # install all Alpine packages and update pip to latest version
@@ -43,6 +44,13 @@ RUN apk upgrade --update-cache -a
 
 RUN apk add --no-cache \
     cairo \
+    font-awesome \
+    font-config \
+    font-dejavu \
+    font-inconsolata \
+    font-noto \
+    font-noto-extra \
+    fontconfig \
     git \
     git-fast-import \
     openssh \
@@ -50,7 +58,11 @@ RUN apk add --no-cache \
     py3-brotli \
     py3-cffi \
     py3-pillow \
-    py3-pip
+    terminus-font \
+    ttf-freefont \
+    py3-pip \
+  && \
+    fc-cache -f
 
 RUN apk add --no-cache --virtual .build \
     freetype-dev \
@@ -62,10 +74,10 @@ RUN apk add --no-cache --virtual .build \
     openjpeg-dev \
     python3-dev \
     zlib-dev \
-&& \
-  pip install --no-cache-dir --upgrade pip \
-&& \
-  pip install --no-cache-dir .
+  && \
+    pip install --no-cache-dir --upgrade pip \
+  && \
+    pip install --no-cache-dir .
 
 ## install plugins
 RUN \
