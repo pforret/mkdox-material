@@ -38,22 +38,30 @@ COPY *requirements.txt ./
 COPY pyproject.toml pyproject.toml
 
 # Perform build and cleanup artifacts and caches
-RUN \
-  apk upgrade --update-cache -a \
-&& \
-  apk add --no-cache \
+# install all Alpine packages and update pip to latest version
+RUN apk upgrade --update-cache -a
+
+RUN apk add --no-cache \
     cairo \
-    freetype-dev \
     git \
     git-fast-import \
-    jpeg-dev \
     openssh \
-    zlib-dev \
-&& \
-  apk add --no-cache --virtual .build \
+    pango \
+    py3-brotli \
+    py3-cffi \
+    py3-pillow \
+    py3-pip
+
+RUN apk add --no-cache --virtual .build \
+    freetype-dev \
+    g++ \
     gcc \
+    jpeg-dev \
     libffi-dev \
     musl-dev \
+    openjpeg-dev \
+    python3-dev \
+    zlib-dev \
 && \
   pip install --no-cache-dir --upgrade pip \
 && \
@@ -63,9 +71,12 @@ RUN \
 RUN \
   if [ "${WITH_PLUGINS}" = "true" ]; then \
     pip install --no-cache-dir \
+      weasyprint \
       mkdocs-material[recommended] \
       mkdocs-material[imaging] \
-      mkdocs-awesome-pages-plugin; \
+      mkdocs-awesome-pages-plugin \
+      mkdocs-with-pdf \
+      markdown-include ; \
   fi \
 && \
   if [ -e user-requirements.txt ]; then \
