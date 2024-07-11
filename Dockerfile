@@ -60,6 +60,7 @@ RUN apk add --no-cache \
     py3-pillow \
     terminus-font \
     ttf-freefont \
+    pngquant \
     py3-pip \
   && \
     fc-cache -f
@@ -87,6 +88,7 @@ RUN \
       mkdocs-material[recommended] \
       mkdocs-material[imaging] \
       mkdocs-awesome-pages-plugin \
+      mkdocs-rss-plugin \
       mkdocs-with-pdf \
       markdown-include ; \
   fi \
