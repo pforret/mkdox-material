@@ -18,13 +18,13 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-FROM python:3.11-alpine3.18
+FROM --platform=linux/amd64 python:3.12-alpine3.20
 
 # Build-time flags
 ARG WITH_PLUGINS=true
 
 # Environment variables
-ENV PACKAGES=/usr/local/lib/python3.11/site-packages
+ENV PACKAGES=/usr/local/lib/python3.12/site-packages
 ENV PYTHONDONTWRITEBYTECODE=1
 
 # Set build directory
@@ -41,16 +41,8 @@ COPY fonts /usr/share/fonts/Additional
 # Perform build and cleanup artifacts and caches
 # install all Alpine packages and update pip to latest version
 RUN apk upgrade --update-cache -a
-
 RUN apk add --no-cache \
     cairo \
-    font-awesome \
-    font-config \
-    font-dejavu \
-    font-inconsolata \
-    font-noto \
-    font-noto-extra \
-    fontconfig \
     git \
     git-fast-import \
     openssh \
@@ -58,12 +50,19 @@ RUN apk add --no-cache \
     py3-brotli \
     py3-cffi \
     py3-pillow \
+    pngquant \
+    py3-pip
+
+RUN apk add --no-cache \
+    font-awesome \
+    font-dejavu \
+    font-inconsolata \
+    font-noto \
+    font-noto-extra \
+    fontconfig \
     terminus-font \
     ttf-freefont \
-    pngquant \
-    py3-pip \
-  && \
-    fc-cache -f
+  && fc-cache -f
 
 RUN apk add --no-cache --virtual .build \
     freetype-dev \
@@ -85,9 +84,10 @@ RUN \
   if [ "${WITH_PLUGINS}" = "true" ]; then \
     pip install --no-cache-dir \
       weasyprint \
-      mkdocs-material[recommended] \
-      mkdocs-material[imaging] \
       mkdocs-awesome-pages-plugin \
+      mkdocs-include-markdown-plugin \
+      mkdocs-material[imaging] \
+      mkdocs-material[recommended] \
       mkdocs-rss-plugin \
       mkdocs-with-pdf \
       markdown-include ; \

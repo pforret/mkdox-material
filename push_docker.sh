@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 
-docker build -t pforret/mkdox-material .
-docker push pforret/mkdox-material
+docker build -t pforret/mkdox-material . &&
+docker push pforret/mkdox-material &&
+setver auto
